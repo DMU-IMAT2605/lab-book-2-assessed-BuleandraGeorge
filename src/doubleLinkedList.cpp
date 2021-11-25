@@ -25,8 +25,13 @@ void  DoubleLinkedList::push_front(int data) {
     size = size + 1;
 }
 void DoubleLinkedList::push_back(int data) {
+    shared_ptr<Node>tmp(new Node(data, Tail , nullptr));
+    Tail->setNext(tmp);
+    Tail = tmp;
+    size = size + 1;
 }
 void DoubleLinkedList::push_after(int data) {
+
 }
 void DoubleLinkedList::push_before(int data) {
 }
