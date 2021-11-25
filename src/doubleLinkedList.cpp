@@ -6,26 +6,22 @@
 
 #include "doubleLinkedList.h"
 using namespace std;
-DoubleLinkedList::DoubleLinkedList() { size = 0; }
-
-DoubleLinkedList::DoubleLinkedList(int iData) {
-    //!< Creates a new node with the given date and sets a null pointer at the previous and next node
-    shared_ptr<Node>firstNode(new Node(iData, nullptr, nullptr));
-    //!< Sets the newly created node as current node
-    Current = firstNode;
-    //!< Updades the head and the tail with the newly created node, and increases the size of the list
-    Head = Current;
-    Tail = Current;
-    size = 1;
+DoubleLinkedList::DoubleLinkedList() {
+    Head = nullptr;
+    Tail = nullptr;
+    Current = nullptr;
+    size = 0; 
 }
+
 DoubleLinkedList::~DoubleLinkedList() {
     cout << "Deleted";
 }
 void  DoubleLinkedList::push_front(int data) {
+
     //!< creates a new node which has the previous node a null pointer and the next node the head
     shared_ptr<Node>tmp(new Node(data, nullptr, Head));
     //!< for the current Head sets for the previous node the new node
-    Head->setPrev(tmp);
+    if (Head!=nullptr)Head->setPrev(tmp);
     //!< Updates the head with the newly created node;
     Head = tmp;
     //!< increases the size of the list
@@ -64,8 +60,14 @@ void DoubleLinkedList::push_before(int data) {
     size = size + 1;
 }
 void DoubleLinkedList::pop_head() {
+    Head = Head->getNext();
+    Head->setPrev(nullptr);
+    size = size - 1;
 }
 void DoubleLinkedList::pop_tail() {
+    Tail = Tail->getPrev();
+    Tail->setNext(nullptr);
+    size = size - 1;
 }
 void DoubleLinkedList::sort(bool ascending) {
 }
