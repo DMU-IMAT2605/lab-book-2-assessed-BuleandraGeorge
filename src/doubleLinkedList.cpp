@@ -33,27 +33,40 @@ void  DoubleLinkedList::push_front(int data) {
     size++;
 }
 void DoubleLinkedList::push_back(int data) {
-    //!< creates a new node which has as previous node the tail and the next node a null pointer
-    shared_ptr<Node>tmp(new Node(data, Tail , nullptr));
-    //!< sets the new node as previous node of the tail 
-    if (Tail!=nullptr) Tail->setNext(tmp);
-    //!< sets the new created node as tail
-    Tail = tmp;
-    //!< increases the size of the list
-    size = size + 1;
+    //!< creates a new node which has as previous node the tail and the next node a null pointer, in other words a new tail which has as prev node the current tail
+    shared_ptr<Node>tmp(new Node(data, Tail, nullptr));
+    if (!empty())
+    {
+
+        //!< if the list is not empty sets as next node of the tail the new node, the current tail has as next node the new node and becomes a common node
+        Tail->setNext(tmp);
+        //!< and the new node is the set as Tail, updates the value of the tail with the new node.
+        Tail = tmp;
+
+    }
+    //!< else initialize the tail, head and the current with the new node;
+    else Tail = Head = Current = tmp;
+    size++;
 }
 void DoubleLinkedList::push_after(int data) {
-    if (Current != nullptr)
+    if (!empty())
     {
+        shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
         if (Current->getNext() != nullptr)
         {
-            shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
             Current->getNext()->setPrev(tmp);
             Current->setNext(tmp);
             size++;
         }
+        else Tail = tmp;
+
     }
-    else push_back(data);
+    else
+    {
+        shared_ptr<Node>tmp(new Node(data, nullptr, nullptr));
+        Tail = Head = Current = tmp;
+    }
+        
 }
 void DoubleLinkedList::push_before(int data) {
     //!< creates a new node which has as previous node the previous node of the current node and the next node the current node
