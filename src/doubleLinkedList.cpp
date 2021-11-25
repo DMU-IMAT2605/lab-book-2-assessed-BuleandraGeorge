@@ -44,8 +44,9 @@ void DoubleLinkedList::push_back(int data) {
 void DoubleLinkedList::push_after(int data) {
     //!< creates a new node which has as prev node the current node and the next node of the current node as next node
     shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
-    //!< sets the new node as the previous node for the next node of the current node
-    Current->getNext()->setPrev(tmp);
+    //!< sets the new node as the previous node for the next node of the current node if the current not is not the tail else sets the new node as tail
+    if (Current->getNext() != nullptr) Current->getNext()->setPrev(tmp);
+    else Tail = tmp;
     //!< sets the new node as next node for the current node
     Current->setNext(tmp);
     size = size + 1;
@@ -53,8 +54,10 @@ void DoubleLinkedList::push_after(int data) {
 void DoubleLinkedList::push_before(int data) {
     //!< creates a new node which has as previous node the previous node of the current node and the next node the current node
     shared_ptr<Node>tmp(new Node(data, Current->getPrev(), Current));
-    //!< sets for the previous node of the current node as next node the new node
-    Current->getPrev()->setNext(tmp);
+    //!< sets for the previous node of the current node as next node the new node if the current node is not the head else sets the new node as head
+    if (Current->getPrev() != nullptr) Current->getPrev()->setNext(tmp);
+    else Head = tmp;
+  
     //!< sets for the current node as the previous node the new node
     Current->setPrev(tmp);
     //!< increses the size
@@ -73,10 +76,10 @@ int DoubleLinkedList::sizeOf() {
     return size;
 }
 int DoubleLinkedList::look_head() {
-    return 1;
+    return Head->getData();
 }
 int DoubleLinkedList::look_tail() {
-    return 1;
+    return Tail->getData();
 }
 int DoubleLinkedList::look_current() {
     return Current->getData();

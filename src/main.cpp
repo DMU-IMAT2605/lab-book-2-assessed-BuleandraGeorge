@@ -19,9 +19,10 @@
 void main() /** Entry point for the application */
 {
 	DoubleLinkedList myList(1000);
-	myList.push_back(3000);
-	myList.move_down();
-	cout << myList.look_current();
+	myList.push_before(1001);
+	cout<<myList.look_head();
+
+	
 	
 	_CrtDumpMemoryLeaks(); // Look in the output window for a report
 	system("pause");
