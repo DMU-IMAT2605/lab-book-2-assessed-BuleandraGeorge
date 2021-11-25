@@ -1,8 +1,8 @@
 #include "Node.h"
 #include <memory>
-Node::Node(int data, shared_ptr<Node> prev, shared_ptr<Node> next)
+Node::Node(int iData, shared_ptr<Node> prev, shared_ptr<Node> next)
 {
-	data = data;
+	data = iData;
 	prev = prev;
 	next = next;
 }
@@ -12,7 +12,7 @@ Node::~Node()
 }
 int Node::getData()
 {
-	cout << data;
+	return data;
 }
 shared_ptr<Node> Node::getNext()
 {
@@ -21,4 +21,11 @@ shared_ptr<Node> Node::getNext()
 shared_ptr<Node> Node::getPrev()
 {
 	return prev;
+}
+void Node::setPrev(shared_ptr<Node> node)
+{
+	prev = node;
+}
+void Node::setNext(shared_ptr<Node> node) {
+	next = node;
 }
