@@ -17,15 +17,20 @@ DoubleLinkedList::~DoubleLinkedList() {
     cout << "Deleted";
 }
 void  DoubleLinkedList::push_front(int data) {
-
     //!< creates a new node which has the previous node a null pointer and the next node the head
     shared_ptr<Node>tmp(new Node(data, nullptr, Head));
-    //!< for the current Head, sets at previous node the new node if exits a head
-    if (Head!=nullptr)Head->setPrev(tmp);
-    //!< Updates the head with the newly created node;
-    Head = tmp;
-    //!< increases the size of the list
-    size = size + 1;
+    if (!empty())
+    {
+        
+        //!< if the list is not empty sets as previous node of the head the new node
+        Head->setPrev(tmp);
+        //!< and the new node is the set as head
+        Head = tmp;
+        
+    }
+    //!< else initialize the tail,head and the current with the new node;
+    else Tail=Head=Current = tmp;
+    size++;
 }
 void DoubleLinkedList::push_back(int data) {
     //!< creates a new node which has as previous node the tail and the next node a null pointer
@@ -38,14 +43,17 @@ void DoubleLinkedList::push_back(int data) {
     size = size + 1;
 }
 void DoubleLinkedList::push_after(int data) {
-    //!< creates a new node which has as prev node the current node and the next node of the current node as next node
-    shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
-    //!< sets the new node as the previous node for the next node of the current node if the current not is not the tail else sets the new node as tail
-    if (Current->getNext() != nullptr) Current->getNext()->setPrev(tmp);
-    else Tail = tmp;
-    //!< sets the new node as next node for the current node
-    Current->setNext(tmp);
-    size = size + 1;
+    if (Current != nullptr)
+    {
+        if (Current->getNext() != nullptr)
+        {
+            shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
+            Current->getNext()->setPrev(tmp);
+            Current->setNext(tmp);
+            size++;
+        }
+    }
+    else push_back(data);
 }
 void DoubleLinkedList::push_before(int data) {
     //!< creates a new node which has as previous node the previous node of the current node and the next node the current node
