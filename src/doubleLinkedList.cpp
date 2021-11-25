@@ -20,7 +20,7 @@ void  DoubleLinkedList::push_front(int data) {
 
     //!< creates a new node which has the previous node a null pointer and the next node the head
     shared_ptr<Node>tmp(new Node(data, nullptr, Head));
-    //!< for the current Head sets for the previous node the new node
+    //!< for the current Head, sets at previous node the new node if exits a head
     if (Head!=nullptr)Head->setPrev(tmp);
     //!< Updates the head with the newly created node;
     Head = tmp;
@@ -31,7 +31,7 @@ void DoubleLinkedList::push_back(int data) {
     //!< creates a new node which has as previous node the tail and the next node a null pointer
     shared_ptr<Node>tmp(new Node(data, Tail , nullptr));
     //!< sets the new node as previous node of the tail 
-    Tail->setNext(tmp);
+    if (Tail!=nullptr) Tail->setNext(tmp);
     //!< sets the new created node as tail
     Tail = tmp;
     //!< increases the size of the list
