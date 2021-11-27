@@ -50,18 +50,22 @@ void DoubleLinkedList::push_back(int data) {
 }
 void DoubleLinkedList::push_after(int data) {
     if (!empty())
-    {
+    { //!< if the list is not empty creates a new node which has as previous node the current node and the next node the next node of the current node
         shared_ptr<Node>tmp(new Node(data, Current, Current->getNext()));
         if (Current->getNext() != nullptr)
-        {
+        {   //!< if the current node is not the tail, sets for the previous node of the next node of the current node the new node
             Current->getNext()->setPrev(tmp);
+            //!< for the current node sets as next node the new node
             Current->setNext(tmp);
+            //!< increases the size
             size++;
         }
+        //!< if the current node is the tail then updates the Tail with the new node
         else Tail = tmp;
 
     }
     else
+        //!< if the list is empty creates a new node and it sets as tail head and current
     {
         shared_ptr<Node>tmp(new Node(data, nullptr, nullptr));
         Tail = Head = Current = tmp;
