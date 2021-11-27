@@ -73,16 +73,27 @@ void DoubleLinkedList::push_after(int data) {
         
 }
 void DoubleLinkedList::push_before(int data) {
-    //!< creates a new node which has as previous node the previous node of the current node and the next node the current node
-    shared_ptr<Node>tmp(new Node(data, Current->getPrev(), Current));
-    //!< sets for the previous node of the current node as next node the new node if the current node is not the head else sets the new node as head
-    if (Current->getPrev() != nullptr) Current->getPrev()->setNext(tmp);
-    else Head = tmp;
-  
-    //!< sets for the current node as the previous node the new node
-    Current->setPrev(tmp);
-    //!< increses the size
-    size = size + 1;
+    if (!empty())
+    { //!< if the list is not empty creates a new node which has as previous node the previous node of the current node and the next node the current node
+        shared_ptr<Node>tmp(new Node(data, Current->getPrev(), Current));
+        if (Current->getPrev() != nullptr)
+        {   //!< if the current node is not the head, sets for the previous node of the next node of the current node the new node
+            Current->getPrev()->setNext(tmp);
+            //!< for the current node sets as previous node the new node
+            Current->setPrev(tmp);
+            //!< increases the size
+            size++;
+        }
+        //!< if the current node is the Head then updates the Tail with the new node
+        else Head = tmp;
+
+    }
+    else
+        //!< if the list is empty creates a new node and it sets as tail head and current
+    {
+        shared_ptr<Node>tmp(new Node(data, nullptr, nullptr));
+        Tail = Head = Current = tmp;
+    }
 }
 void DoubleLinkedList::pop_head() {
     Head = Head->getNext();

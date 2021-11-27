@@ -19,7 +19,7 @@
 void main() /** Entry point for the application */
 {
 	DoubleLinkedList myList;
-	myList.push_after(1000);
+	myList.push_before(1000);
 	cout<<myList.look_head();
 	
 	
