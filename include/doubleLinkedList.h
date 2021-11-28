@@ -149,12 +149,16 @@ template <class G>
 void DoubleLinkedList<G>::pop_head() {
     if (!empty())
     {
+        //!< creates a copy of the next node of the head
         shared_ptr<Node<G>>tmp = Head->getNext();
+        //!< sets the next node of the head as null
         Head->setNext(nullptr);
+        //!< if next node of the head is not null then set the previous node of the next node of the head as null 
         if (tmp != nullptr) tmp->setPrev(nullptr);
+        //!< else that means that it's only one node in the list and then sets Tail Current and Head to nullptr
         else Tail = Current = Head = nullptr;
         size = size - 1;
-
+        //!< updates the head and the current node if necessary
         if (Head == Current)
         {
             Head = Current = tmp;
@@ -171,12 +175,16 @@ template <class G>
 void DoubleLinkedList<G>::pop_tail() {
     if (!empty())
     {
-
+        //!< creates a copy of the previous node of the tail
         shared_ptr<Node<G>>tmp = Tail->getPrev();
+        //!<sets the previous node of the tails as null
         Tail->setPrev(nullptr);
+        //!< if the previous node of the current tail is not null then set the next node of it to null
         if (tmp != nullptr)tmp->setNext(nullptr);
+        //!< else the list becomes empty
         else Tail = Head = Current = nullptr;
         size = size - 1;
+        //<! updates the tail and the current node accordingly
         if (Tail == Current)
         {
             Tail = Current = tmp;
@@ -191,6 +199,8 @@ void DoubleLinkedList<G>::pop_tail() {
 }
 template <class G>
 void DoubleLinkedList<G>::sort(bool ascending) {
+    //!< bubble sort algorithm is used to sort the list
+    //!< the only difference is that it's modified to sort in ascending or descending way according to parameter and to go through the list using built in methods
     bool change = true;
     while (change)
     {
@@ -198,8 +208,8 @@ void DoubleLinkedList<G>::sort(bool ascending) {
         Current = Head;
         while (Current != Tail)
         {
-            bool greater;
-            greater = ((Current->getData()) > (Current->getNext()->getData())) ? true : false;
+            
+            bool greater = ((Current->getData()) > (Current->getNext()->getData())) ? true : false;
             if (greater == ascending)
             {
                 swapWithNext();
@@ -239,14 +249,19 @@ void DoubleLinkedList<G>::move_down() {
 }
 template <class G>
 void DoubleLinkedList<G>::swapWithNext()
-{
+{   //!< tests if the current node is different by the Tail
     if (Current != Tail)
     {
+        //!< Creates a copy of the next node of the current node
         shared_ptr<Node<G>>NEXT = Current->getNext();
+        //!< if the current happens to be the head, updates the head with the next node
         if (Current == Head) Head = NEXT;
+        //!< It does a copy of the previous node of the current node
         shared_ptr<Node<G>>PREVIOUS = Current->getPrev();
+        //!< Sets the previous and the next node of the current node with previous and next node of the next node
         Current->setPrev(NEXT);
         Current->setNext(NEXT->getNext());
+        //!< if Next node is not the last node in the list sets as previous node the current node else updates the tail with the current node
         if (NEXT->getNext() != nullptr) NEXT->getNext()->setPrev(Current); else Tail = Current;
         NEXT->setPrev(PREVIOUS);
         NEXT->setNext(Current);
