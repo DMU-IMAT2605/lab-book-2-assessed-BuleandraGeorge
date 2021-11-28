@@ -16,8 +16,7 @@ private :
     shared_ptr<Node> Current;
 
 public :
-    DoubleLinkedList();
-    DoubleLinkedList(int data); //!< default constructor
+    DoubleLinkedList(); //!<default constructor
     ~DoubleLinkedList(); //!< default deconstructor
     void push_front(int data); //!< inserts a node at front
     void push_back(int data);//!< inserts a node at back
@@ -33,5 +32,6 @@ public :
     int look_current();//!< returns the data in the current 
     void move_up();//!< moves the pointer to the next upper node of the current node
     void move_down();//!< moves the pointer to the next lower node of the current node
+    void swapWithNext();//! swaps the position of the current node with the next node
 };
 

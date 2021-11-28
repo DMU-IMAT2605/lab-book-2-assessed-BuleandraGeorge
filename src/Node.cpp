@@ -1,14 +1,14 @@
 #include "Node.h"
 #include <memory>
-Node::Node(int iData, shared_ptr<Node> prev, shared_ptr<Node> next)
+Node::Node(int iData, shared_ptr<Node> pprev, shared_ptr<Node> pnext)
 {
 	data = iData;
-	prev = prev;
-	next = next;
+	prev = pprev;
+	next = pnext;
 }
 Node::~Node()
 {
-	cout << "node deleted";
+	cout << "node deleted with data: "<<data<<endl;
 }
 int Node::getData()
 {

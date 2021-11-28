@@ -21,16 +21,17 @@ void  DoubleLinkedList::push_front(int data) {
     shared_ptr<Node>tmp(new Node(data, nullptr, Head));
     if (!empty())
     {
-        
+ 
         //!< if the list is not empty sets as previous node of the head the new node
         Head->setPrev(tmp);
         //!< and the new node is the set as head
         Head = tmp;
-        
     }
     //!< else initialize the tail,head and the current with the new node;
     else Tail=Head=Current = tmp;
-    size++;
+    size=size+1;
+    
+
 }
 void DoubleLinkedList::push_back(int data) {
     //!< creates a new node which has as previous node the tail and the next node a null pointer, in other words a new tail which has as prev node the current tail
@@ -61,7 +62,12 @@ void DoubleLinkedList::push_after(int data) {
             size++;
         }
         //!< if the current node is the tail then updates the Tail with the new node
-        else Tail = tmp;
+        else {
+            //!< for the current node sets as next node the new node
+            Current->setNext(tmp);
+            Tail = tmp;
+            size = size + 1;
+        }
 
     }
     else
@@ -69,6 +75,7 @@ void DoubleLinkedList::push_after(int data) {
     {
         shared_ptr<Node>tmp(new Node(data, nullptr, nullptr));
         Tail = Head = Current = tmp;
+        size = size + 1;
     }
         
 }
@@ -82,10 +89,14 @@ void DoubleLinkedList::push_before(int data) {
             //!< for the current node sets as previous node the new node
             Current->setPrev(tmp);
             //!< increases the size
-            size++;
+            size=size+1;
         }
         //!< if the current node is the Head then updates the Tail with the new node
-        else Head = tmp;
+        else {
+            Current->setPrev(tmp);
+            Head = tmp;
+            size = size + 1;
+        }
 
     }
     else
@@ -93,19 +104,69 @@ void DoubleLinkedList::push_before(int data) {
     {
         shared_ptr<Node>tmp(new Node(data, nullptr, nullptr));
         Tail = Head = Current = tmp;
+        size = size + 1;
     }
 }
 void DoubleLinkedList::pop_head() {
-    Head = Head->getNext();
-    Head->setPrev(nullptr);
-    size = size - 1;
+    if(!empty())
+    {
+        shared_ptr<Node>tmp = Head->getNext();
+        Head->setNext(nullptr);
+        if (tmp != nullptr) tmp->setPrev(nullptr);
+        else Tail = Current = Head = nullptr;
+        size = size - 1;
+        
+        if (Head == Current)
+        {
+            Head = Current = tmp;
+        }
+        else
+        {
+            Head = tmp;
+        }
+
+    }
+
 }
 void DoubleLinkedList::pop_tail() {
-    Tail = Tail->getPrev();
-    Tail->setNext(nullptr);
-    size = size - 1;
+    if (!empty())
+    {
+   
+        shared_ptr<Node>tmp = Tail->getPrev();
+        Tail->setPrev(nullptr);
+        if (tmp != nullptr)tmp->setNext(nullptr);
+        else Tail = Head = Current = nullptr;
+        size = size - 1;
+        if (Tail == Current)
+        {
+            Tail = Current = tmp;
+            
+        }
+        else
+        {
+            Tail = tmp;
+        }
+        
+    }
 }
 void DoubleLinkedList::sort(bool ascending) {
+    bool change = true;
+    while (change)
+    {
+        change = false;
+        Current = Head;
+        while(Current!=Tail)
+        {
+            bool greater;
+            greater = ((Current->getData()) > (Current->getNext()->getData())) ? true : false;
+            if (greater==ascending)
+            {
+                swapWithNext();
+                change = true;
+            }
+            else move_down();
+        }
+    }
 }
 bool DoubleLinkedList::empty() {
     return size == 0;
@@ -127,5 +188,22 @@ void DoubleLinkedList::move_up() {
 }
 void DoubleLinkedList::move_down() {
     Current = Current->getNext();
+}
+void DoubleLinkedList::swapWithNext()
+{
+    if (Current != Tail)
+    {
+        shared_ptr<Node>NEXT = Current->getNext();
+        if (Current == Head) Head = NEXT;
+        shared_ptr<Node>PREVIOUS = Current->getPrev();
+        Current->setPrev(NEXT);
+        Current->setNext(NEXT->getNext());
+        if (NEXT->getNext() != nullptr) NEXT->getNext()->setPrev(Current); else Tail = Current;
+        NEXT->setPrev(PREVIOUS);
+        NEXT->setNext(Current);
+        if(PREVIOUS!=nullptr)PREVIOUS->setNext(NEXT);
+    }
+    
+
 }
 
