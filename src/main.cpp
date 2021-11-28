@@ -18,7 +18,7 @@
 
 void main() /** Entry point for the application */
 {
-	DoubleLinkedList myList;
+	DoubleLinkedList<int> myList;
 
 	myList.push_back(50);
 	cout << myList.look_tail()<<endl;
