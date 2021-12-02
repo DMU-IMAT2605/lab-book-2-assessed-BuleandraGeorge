@@ -16,7 +16,7 @@
 #include <iostream>
 #include "doubleLinkedList.h"
 
-void main() /** Entry point for the application */
+int main() /** Entry point for the application */
 {
 	DoubleLinkedList<int> myList;
 
@@ -28,22 +28,13 @@ void main() /** Entry point for the application */
 	cout << myList.look_tail() << endl;
 	myList.push_back(72);
 	cout << myList.look_tail() << endl;
-	myList.sort(false);
-	myList.move_up();
-	myList.move_up();
-	myList.move_up();
-	cout << myList.look_current() << endl;
-	myList.move_down();
-	cout << myList.look_current() << endl;
-	myList.move_down();
-	cout << myList.look_current() << endl;
-	myList.move_down();
-	cout << myList.look_current() << endl;
-	
+	myList.sort(true);
+
 
 
 	
 	
 	_CrtDumpMemoryLeaks(); // Look in the output window for a report
 	system("pause");
+	return 0;
 }

@@ -1,4 +1,8 @@
 #pragma once
+/*! \class Node
+	\brief A double linked list node. 
+	\detailed Stores the data, the previous and the next node, and provides basic functionabilities as setting and receiving the surrounding nodes or receiving the stored data
+*/
 #include <iostream>
 #include <memory>
 using namespace std;
@@ -17,8 +21,9 @@ public:
 	G getData(); //!< returns the data stored in the node 
 	shared_ptr<Node<G>> getPrev();//!< returns the previous node;
 	shared_ptr<Node<G>> getNext();//!< returns the next node;
-	void setPrev(shared_ptr<Node<G>> node);//!< sets the prev node;
-	void setNext(shared_ptr<Node<G>> node);//!< sets the next node;
+	void setPrev(shared_ptr<Node<G>> node);//!< sets the prev node
+	void setNext(shared_ptr<Node<G>> node);//!< sets the next node
+	void setData(G gdata);
 };
 
 template <class G>
@@ -37,6 +42,11 @@ template <class G>
 G Node<G>::getData()
 {
 	return data;
+}
+template <class G>
+void Node<G>::setData(G gData)
+{
+	data=gData;
 }
 template <class G>
 shared_ptr<Node<G>> Node<G>::getNext()

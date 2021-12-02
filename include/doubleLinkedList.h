@@ -1,10 +1,12 @@
 #pragma once
 
-/*! \class Double Linked List
+/*! \class DoubleLinkedList
     \brief A double linked list data structure
+    \detailed Provides functionalities as adding and removing the nodes as much as sorting or just retreiving the data from the nodes and traversing the list.
 */
 
 #include "Node.h"
+#include <set>
 using namespace std;
 template <class G>
 class DoubleLinkedList
@@ -14,7 +16,9 @@ private :
     shared_ptr<Node<G>> Tail;
     int size;
     shared_ptr<Node<G>> Current;
-
+    void swapWithNext();//! swaps the position of the current node with the next node
+    void findLeaf(shared_ptr<Node<G>> node, G value); 
+    void getTreeLeafs(shared_ptr<Node<G>> node);
 public :
     DoubleLinkedList(); //!<default constructor
     ~DoubleLinkedList(); //!< default deconstructor
@@ -32,7 +36,7 @@ public :
     G look_current();//!< returns the data in the current 
     void move_up();//!< moves the pointer to the next upper node of the current node
     void move_down();//!< moves the pointer to the next lower node of the current node
-    void swapWithNext();//! swaps the position of the current node with the next node
+ 
 };
 
 
@@ -199,25 +203,34 @@ void DoubleLinkedList<G>::pop_tail() {
 }
 template <class G>
 void DoubleLinkedList<G>::sort(bool ascending) {
-    //!< bubble sort algorithm is used to sort the list
-    //!< the only difference is that it's modified to sort in ascending or descending way according to parameter and to go through the list using built in methods
-    bool change = true;
-    while (change)
-    {
-        change = false;
-        Current = Head;
-        while (Current != Tail)
-        {
-            
-            bool greater = ((Current->getData()) > (Current->getNext()->getData())) ? true : false;
-            if (greater == ascending)
-            {
-                swapWithNext();
-                change = true;
-            }
-            else move_down();
-        }
+ /*cout << "intrat in functie" << endl;
+    shared_ptr<Node<G>>cpHead = Head;
+    cout << "a mers copie la head" << endl;
+    multiset<G>mySet;
+    cout << "a mers creare de set" << endl;
+    while (cpHead!=nullptr) {
+        mySet.insert(cpHead->getData());
+        cpHead = cpHead->getNext();
+        cout << "a mers get next"<<endl;
     }
+    multiset<int>::iterator it;
+    cpHead = Head;
+    for (it = mySet.begin();it != mySet.end();++it)
+    {
+        cout << *it << endl;
+        cpHead->setData(*it);
+        cpHead = cpHead->getNext();
+    }
+    */
+    shared_ptr<Node<G>>Root(new Node<G>(Head->getData(), nullptr, nullptr));
+ 
+    shared_ptr<Node<G>>Curr = Head->getNext();
+    while (Curr != nullptr)
+    {
+        findLeaf(Root, Curr->getData());
+        Curr = Curr->getNext();
+    }
+    getTreeLeafs(Root);
 }
 template <class G>
 bool DoubleLinkedList<G>::empty() {
@@ -263,10 +276,33 @@ void DoubleLinkedList<G>::swapWithNext()
         Current->setNext(NEXT->getNext());
         //!< if Next node is not the last node in the list sets as previous node the current node else updates the tail with the current node
         if (NEXT->getNext() != nullptr) NEXT->getNext()->setPrev(Current); else Tail = Current;
+        //!< for the next node of the current node sets the previous with the value of the previous node  of the current node
         NEXT->setPrev(PREVIOUS);
+        //!<for the next node of the next node of the current node sets the value of the next node to the current node
         NEXT->setNext(Current);
+        //!< if the current node is not the head sets the 
         if (PREVIOUS != nullptr)PREVIOUS->setNext(NEXT);
     }
-
 }
+    template <class G>
+    void DoubleLinkedList<G>::findLeaf(shared_ptr<Node<G>> root, G value)
+    {
+        cout << "founded leaf";
+        if (root == nullptr) {
+            shared_ptr<Node<G>>root(new Node<G>(value, nullptr, nullptr)); cout << "Created leaf";
+        }
+        else if (root->getData() <= value) findLeaf(root->getPrev(), value);
+             else findLeaf(root->getNext(), value);
+      
+    }
+    template <class G>
+    void DoubleLinkedList<G>::getTreeLeafs(shared_ptr<Node<G>> root) {
+        if (root != nullptr)
+        {
+            getTreeLeafs(root->getPrev());
+            cout << root->getData();
+            getTreeLeafs(root->getNext());
+        }
+        
+    }
 
