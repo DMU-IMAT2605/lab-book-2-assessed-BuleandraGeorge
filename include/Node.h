@@ -1,7 +1,6 @@
 #pragma once
 /*! \class Node
-	\brief A double linked list node. 
-	\detailed Stores the data, the previous and the next node, and provides basic functionabilities as setting and receiving the surrounding nodes or receiving the stored data
+	\brief A double linked list node. Stores the data, the previous and the next node, and provides basic functionabilities as setting and receiving the surrounding nodes or receiving the stored data
 */
 #include <memory>
 #include <iostream>
