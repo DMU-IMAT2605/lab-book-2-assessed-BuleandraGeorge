@@ -6,7 +6,8 @@
 */
 
 #include "Node.h"
-#include <set>
+#include "iostream";
+#include <vector>
 using namespace std;
 template <class G>
 class DoubleLinkedList
@@ -16,9 +17,6 @@ private :
     shared_ptr<Node<G>> Tail;
     int size;
     shared_ptr<Node<G>> Current;
-    void swapWithNext();//! swaps the position of the current node with the next node
-    void findLeaf(shared_ptr<Node<G>> node, G value); 
-    void getTreeLeafs(shared_ptr<Node<G>> node);
 public :
     DoubleLinkedList(); //!<default constructor
     ~DoubleLinkedList(); //!< default deconstructor
@@ -36,13 +34,10 @@ public :
     G look_current();//!< returns the data in the current 
     void move_up();//!< moves the pointer to the next upper node of the current node
     void move_down();//!< moves the pointer to the next lower node of the current node
- 
+    void printList();//!< prints the list
+    void deleteList();
 };
 
-
-
-#include "doubleLinkedList.h"
-using namespace std;
 template <class G>
 DoubleLinkedList<G>::DoubleLinkedList() {
     Head = nullptr;
@@ -52,7 +47,6 @@ DoubleLinkedList<G>::DoubleLinkedList() {
 }
 template <class G>
 DoubleLinkedList<G>::~DoubleLinkedList() {
-    cout << "Deleted";
 }
 template <class G>
 void  DoubleLinkedList<G>::push_front(G data) {
@@ -203,35 +197,26 @@ void DoubleLinkedList<G>::pop_tail() {
 }
 template <class G>
 void DoubleLinkedList<G>::sort(bool ascending) {
- /*cout << "intrat in functie" << endl;
-    shared_ptr<Node<G>>cpHead = Head;
-    cout << "a mers copie la head" << endl;
-    multiset<G>mySet;
-    cout << "a mers creare de set" << endl;
-    while (cpHead!=nullptr) {
-        mySet.insert(cpHead->getData());
-        cpHead = cpHead->getNext();
-        cout << "a mers get next"<<endl;
-    }
-    multiset<int>::iterator it;
-    cpHead = Head;
-    for (it = mySet.begin();it != mySet.end();++it)
+    bool change = true;
+    while (change)
     {
-        cout << *it << endl;
-        cpHead->setData(*it);
-        cpHead = cpHead->getNext();
+        change = false;
+        Current = Head;
+        while (Current != Tail)
+        {
+            bool greater;
+            greater = ((Current->getData()) >= (Current->getNext()->getData())) ? true : false;
+            if (greater == ascending)
+            {
+                G data = Current->getData();
+                Current->setData(Current->getNext()->getData());
+                Current->getNext()->setData(data);
+                change = true;
+            }
+          move_down();
+        } 
     }
-    */
-    shared_ptr<Node<G>>Root(new Node<G>(Head->getData(), nullptr, nullptr));
- 
-    shared_ptr<Node<G>>Curr = Head->getNext();
-    while (Curr != nullptr)
-    {
-        findLeaf(Root, Curr->getData());
-        Curr = Curr->getNext();
-    }
-    getTreeLeafs(Root);
-}
+ }
 template <class G>
 bool DoubleLinkedList<G>::empty() {
     return size == 0;
@@ -254,55 +239,28 @@ G DoubleLinkedList<G>::look_current() {
 }
 template <class G>
 void DoubleLinkedList<G>::move_up() {
-    Current = Current->getPrev();
+    if (Current->getPrev()!=nullptr)Current = Current->getPrev();
 }
 template <class G>
 void DoubleLinkedList<G>::move_down() {
-    Current = Current->getNext();
+    if(Current->getNext()!=nullptr)Current = Current->getNext();
 }
-template <class G>
-void DoubleLinkedList<G>::swapWithNext()
-{   //!< tests if the current node is different by the Tail
-    if (Current != Tail)
-    {
-        //!< Creates a copy of the next node of the current node
-        shared_ptr<Node<G>>NEXT = Current->getNext();
-        //!< if the current happens to be the head, updates the head with the next node
-        if (Current == Head) Head = NEXT;
-        //!< It does a copy of the previous node of the current node
-        shared_ptr<Node<G>>PREVIOUS = Current->getPrev();
-        //!< Sets the previous and the next node of the current node with previous and next node of the next node
-        Current->setPrev(NEXT);
-        Current->setNext(NEXT->getNext());
-        //!< if Next node is not the last node in the list sets as previous node the current node else updates the tail with the current node
-        if (NEXT->getNext() != nullptr) NEXT->getNext()->setPrev(Current); else Tail = Current;
-        //!< for the next node of the current node sets the previous with the value of the previous node  of the current node
-        NEXT->setPrev(PREVIOUS);
-        //!<for the next node of the next node of the current node sets the value of the next node to the current node
-        NEXT->setNext(Current);
-        //!< if the current node is not the head sets the 
-        if (PREVIOUS != nullptr)PREVIOUS->setNext(NEXT);
-    }
-}
+
     template <class G>
-    void DoubleLinkedList<G>::findLeaf(shared_ptr<Node<G>> root, G value)
-    {
-        cout << "founded leaf";
-        if (root == nullptr) {
-            shared_ptr<Node<G>>root(new Node<G>(value, nullptr, nullptr)); cout << "Created leaf";
-        }
-        else if (root->getData() <= value) findLeaf(root->getPrev(), value);
-             else findLeaf(root->getNext(), value);
-      
-    }
-    template <class G>
-    void DoubleLinkedList<G>::getTreeLeafs(shared_ptr<Node<G>> root) {
-        if (root != nullptr)
+    void DoubleLinkedList<G>::printList() {
+        shared_ptr<Node<G>>it =Head;
+        while (it != nullptr)
         {
-            getTreeLeafs(root->getPrev());
-            cout << root->getData();
-            getTreeLeafs(root->getNext());
+            cout << it->getData()<<" ";
+            it = it->getNext();
         }
-        
+        cout << endl;
+    }
+    template <class G>
+    void DoubleLinkedList<G>::deleteList() {
+        while (!empty())
+        {
+            pop_head();
+        }
     }
 

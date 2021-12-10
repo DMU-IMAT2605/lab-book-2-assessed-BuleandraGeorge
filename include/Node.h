@@ -3,8 +3,8 @@
 	\brief A double linked list node. 
 	\detailed Stores the data, the previous and the next node, and provides basic functionabilities as setting and receiving the surrounding nodes or receiving the stored data
 */
-#include <iostream>
 #include <memory>
+#include <iostream>
 using namespace std;
 template <class G>
 class Node
@@ -12,9 +12,9 @@ class Node
 private:
 	shared_ptr<Node<G>> next;
 	shared_ptr<Node<G>> prev;
-	G data;
 	
 public:
+	G data;
 	Node(G data, shared_ptr<Node> prev, shared_ptr<Node> next); //!< Default constructor for a node
 	//!< \param data reprezents the data stored in the node \param prev reprezents a pointer to the previos node \param next reprezents a pointer to the next node
 	~Node(); //!< Default deconstructor for node
@@ -36,7 +36,6 @@ Node<G>::Node(G iData, shared_ptr<Node<G>> pprev, shared_ptr<Node<G>> pnext)
 template <class G>
 Node<G>::~Node()
 {
-	cout << "node deleted with data: " << data << endl;
 }
 template <class G>
 G Node<G>::getData()
