@@ -452,7 +452,7 @@ int main() /** Entry point for the application */
 			}
 			case '3':
 			{
-				LIST_MANIPULATION_FUNCTION("IRRATIONAL NUMBERS", doubleList);
+				LIST_MANIPULATION_FUNCTION("RATIONAL NUMBERS", doubleList);
 				option = '0';
 				break;
 			}
